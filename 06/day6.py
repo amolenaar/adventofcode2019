@@ -13,7 +13,7 @@ def path(orbit_map, obj):
     return [orbits] + path(orbit_map, orbits)
 
 def count_all_orbits(orbit_map):
-    return sum([count_orbits(orbit_map, obj) for obj in orbit_map])
+    return sum(count_orbits(orbit_map, obj) for obj in orbit_map)
 
 
 def test_small_orbits():
