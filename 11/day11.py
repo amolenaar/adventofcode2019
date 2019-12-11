@@ -12,7 +12,6 @@ def memory():
 
 def read(codes, addr, offset):
     return tuple(codes[a] for a in range(addr, addr+offset))
-    #return codes[addr:addr+offset]
 
 def param(codes, index_or_val, mode, relative_base):
     if mode == 1:
@@ -154,10 +153,10 @@ def test_directions():
 
 def part1():
     panels = robot(memory())
+    paint(panels)
     return len(panels)
 
-def part2():
-    panels = robot(memory(), 1)
+def paint(panels):
     white = {k: v for k, v in panels.items() if v == 1}
     xs = [x for x, y in white]
     ys = [y for x, y in white]
@@ -166,6 +165,9 @@ def part2():
             print("#" if (x, y) in white else " ", end='')
         print("")
 
+def part2():
+    panels = robot(memory(), 1)
+    paint(panels)
     return "LPZKLGHR"
 
 
