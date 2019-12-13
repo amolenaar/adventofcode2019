@@ -1,4 +1,5 @@
 import itertools
+import time
 
 def parse_memory(line):
     return list(map(int, line.split(",")))
@@ -133,12 +134,13 @@ def change_direction(direction, turn):
 
 
 def paint(panels):
-    tiles = [' ', '#', '%', '-', 'o']
+    tiles = [' ', '\033[35m#', '\033[32m%', '\033[33;1m-\033[0m', '\033[31mo']
     xs, ys = zip(*panels.keys())
     for y in range(min(ys), max(ys) + 1):
+        print("    ", end="")
         for x in range(min(xs), max(xs) + 1):
-            print(tiles[panels.get((x, y), 0)], end='')
-        print("")
+            print(tiles[panels.get((x, y), 0)], end="")
+        print("\033[0m")
 
 
 def arcade(mem):
@@ -175,13 +177,16 @@ def arcade_with_joystick(mem):
             t = next(c)
             if x == -1 and y == 0:
                 score = t
-            elif t == BALL:
-                ball = (x, y)
-            elif t == PADDLE:
-                paddle = (x, y)
             else:
-                assert x >= 0 and y >= 0, (x, y)
                 grid[(x, y)] = t
+                if t == BALL:
+                    print("\033[24A")
+                    paint(grid)
+                    print(f"    score: {score}")
+                    time.sleep(0.06)
+                    ball = (x, y)
+                elif t == PADDLE:
+                    paddle = (x, y)
             if paddle and ball:
                 if paddle[0] < ball[0]:
                     joystick = 1
@@ -203,6 +208,8 @@ def part1():
 
 
 def part2():
+    #print("\n" * 30)
+    print("\033[2J")
     mem = memory()
     mem[0] = 2
     grid, score = arcade_with_joystick(mem)
