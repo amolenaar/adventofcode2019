@@ -50,7 +50,6 @@ def intcode_computer(initial_codes):
         opcode = instr % 100
 
         if opcode == 99: # exit
-            print("INPUTS:", inputs)
             break
         elif opcode == 1: # add
             _, i1, i2, o = read(codes, addr, 4)
